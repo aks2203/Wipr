@@ -35,8 +35,28 @@ for i, step in enumerate(routes[0]['legs'][0]['steps']):
     lats.append(step['end_location']['lat'])
     longs.append(step['end_location']['lng'])
 
+travel_route = zip(lats, longs)
 
 gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 
 gmap_plt.plot(lats, longs)
 gmap_plt.draw("mymap.html")
+
+def get_length(travel_route):
+    ''' return length in miles of total route'''
+    return
+
+def segment_length(p1, p2):
+    ''' return length in miles between two lat,lng points '''
+    return
+
+def fifteen_mile_markers(travel_route):
+    ''' return a list of lat,lng every 15 miles of the trip '''
+    return
+
+
+
+
+
+
+    
