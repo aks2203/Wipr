@@ -30,3 +30,6 @@ for i, hourlyData in enumerate(byHour.data):
     print i
     print hourlyData.temperature
     print ''
+
+
+#AVi WAS HERE.... HAHAHHAHAH
