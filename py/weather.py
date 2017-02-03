@@ -6,8 +6,6 @@
 #
 ################################
 
-# Dan
-# avi
 
 # weather api testing
 import forecastio
@@ -31,5 +29,3 @@ for i, hourlyData in enumerate(byHour.data):
     print hourlyData.temperature
     print ''
 
-
-#AVi WAS HERE.... HAHAHHAHAH
