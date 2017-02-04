@@ -10,9 +10,9 @@
 import Tkinter as tk
 import WiprModule as wp
 
-class TweetGUI():
+class WiprGUI():
     def __init__(self):
-        '''init function to initialize an instance of the TweetGUI class'''
+        '''init function to initialize an instance of the WiprGUI class'''
 
         # Ceate the main window.
         self.main_window = tk.Tk()
@@ -104,17 +104,17 @@ class TweetGUI():
         self.bottom_space.pack(side='bottom')
 
         # Sub Frame
-        self.weathermessage = tk.StringVar()
-        self.weather_label = tk.Label(self.sub_frame, \
-                                        textvariable=self.weathermessage, \
-                                        fg='black', font=14)
+        # self.weathermessage = tk.StringVar()
+        # self.weather_label = tk.Label(self.sub_frame, \
+        #                                 textvariable=self.weathermessage, \
+        #                                 fg='black', font=14)
         self.progressmessage = tk.StringVar()
         self.error_label = tk.Label(self.sub_frame, \
                                         textvariable=self.progressmessage, \
                                         fg='red', font=12)
 
         # Pack Sub frame
-        self.weather_label.pack()
+        # self.weather_label.pack()
         self.error_label.pack()
 
         # Pack the frames
@@ -134,7 +134,9 @@ class TweetGUI():
     def go(self):
         '''go get everything from WiprModule'''
         # print self.origin_entry.get(), self.dest_entry.get()
-        self.weathermessage.set(wp.go(self.origin_entry.get(), self.dest_entry.get()))
+        forcasts = wp.go(self.origin_entry.get(), self.dest_entry.get())
+        # forcast_str = ['%s \n' % (i) for i in forcasts]
+        # self.weathermessage.set(wp.go(self.origin_entry.get(), self.dest_entry.get()))
 
         self.progressmessage.set('Done!')
 
@@ -171,4 +173,4 @@ class TweetGUI():
         self.progressmessage.set('ERROR!')
 
 # Create an instance 
-tweet = TweetGUI()
+tweet = WiprGUI()

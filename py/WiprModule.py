@@ -116,12 +116,34 @@ def fifteen_mile_markers(travel_route, d=15):
 
     return output
 
-def compile_weather(markers):
+def compile_weather(marker_times):
     forcasts = []
-    for marker in markers:
-        forcasts.append(weather.get_weather(marker[0], marker[1]))
+    for marker in marker_times:
+        forcasts.append(weather.get_weather(marker[0], marker[1], time=(datetime.now() + timedelta(seconds=marker[2])
     return forcasts
 
+def segment_times(travel_route, times, markers):
+    ''' merges Google's step times with our mile markers '''
+    
+    j= 1
+    timed_markers = []
+
+    for marker in markers:
+        a = segment_length(marker, travel_route[j-1])
+        b = segment_length(marker, travel_route[j])
+        c = segment_length(marker, travel_route[j+1])
+
+        if a < b and a < c:
+            timed_markers.append((marker[0], marker[1], times[j-1]))
+        elif b < a and b < c:
+            timed_markers.append((marker[0], marker[1], times[j]))
+            j += 1
+        else:
+            timed_markers.append((marker[0], marker[1], times[j+ 1]))
+            j += 1
+
+    #timed_markers is a list of three term tuples (lat, lng, time)
+    return timed_markers
 
 ###--------------------------------------------------------------------------
 ###--------------------------------------------------------------------------
@@ -141,20 +163,29 @@ def go(origin, dest, time=datetime.now()):
 
     lats = []
     longs = []
+    times = []
 
     for i, step in enumerate(routes[0]['legs'][0]['steps']):
         lats.append(step['start_location']['lat'])
         longs.append(step['start_location']['lng'])
-        lats.append(step['end_location']['lat'])
-        longs.append(step['end_location']['lng'])
+        if i == len(routes[0]['legs'][0]['steps']) - 1:
+            lats.append(step['end_location']['lat'])
+            longs.append(step['end_location']['lng'])
 
+        times.append(step['duration']['value'])
+
+
+    new_times = [sum(times[:i]) for i in range(len(times)+1)]
     travel_route = zip(lats, longs)
-    markers = fifteen_mile_markers(travel_route)
-    forcasts = compile_weather(markers)
+    markers = fifteen_mile_markers(zip(lats, longs))
+    marker_times = segment_times(travel_route, new_times, markers)
+    forcasts = compile_weather(marker_times)
+
+    print forcasts
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 5)
 
-    gmap_plt.scatter([mark[0] for mark in markers], [mark[1] for mark in markers], 'r', marker=True)
+    gmap_plt.scatter([mark[0] for mark in markers], [mark[1] for mark in markers], 'r', marker=True, title='AVI')
     gmap_plt.draw("mymap.html")
     os.system('open mymap.html')
     return forcasts
