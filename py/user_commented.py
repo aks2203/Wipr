@@ -12,7 +12,7 @@
 # Import statements, for modules to get Google Maps data and plotting
 from googlemaps import Client
 import gmplot
-from numpy import sin, cos, deg2rad, rad2deg
+from numpy import sin, cos, deg2rad, rad2deg, sqrt, arctan
 
 # API keys, issued to us from Google to access the API
 api_key_route = 'AIzaSyDJJGsUGU96GMLYUdeOdufkoIG-x2Soo9s'
@@ -57,17 +57,27 @@ def get_length(travel_route):
 def segment_length(p1, p2):
     ''' return length in miles between two lat,lng points '''
 
+    # Convert lat and lng to radians
+    lat1_rad = deg2rad(p1[0])
+    lat2_rad = deg2rad(p2[0])
+    lng1_rad = deg2rad(p1[1])
+    lng2_rad = deg2rad(p2[1])
+
     # Calculate lat and long differences and convert to radians
-    delta_lat = deg2rad(p1[0] - p2[0])
-    delta_lng = deg2rad(p1[1] - p2[1])
+    delta_lat_rad = lat1_rad - lat2_rad
+    delta_lng_rad = lng1_rad - lng2_rad
 
-
+    # Convert radian differences to miles using haversine formula
     earth_radius_km = 6371
-    
 
-    return rad2deg(delta_lng), rad2deg(delta_lat)
+    a = sin(delta_lat_rad / 2)**2 + cos(lat1_rad) * cos(lat2_rad) * sin(delta_lng_rad / 2)**2
+    c = 2 * (arctan((sqrt(a)) / sqrt(1 - a)))
+    distance_km = earth_radius_km * c
+    distance_mi = distance_km * 1.609344    
 
-print segment_length((lat0, lng0),(lat1, lng1))
+    return distance_mi
+
+print segment_length((lat0, lng0), (lat1, lng1))
 
 def fifteen_mile_markers(travel_route):
     ''' return a list of lat,lng every 15 miles of the trip '''
