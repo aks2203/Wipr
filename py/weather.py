@@ -13,7 +13,7 @@
 import forecastio
 from datetime import datetime, timedelta
 
-api_key = '9191e5943e8edbb7e275b0193a7f53cf'
+api_key = '45cd7693234cd1549f8d103703b7b5da'
 
 def get_weather(lat, lng, time=datetime.now()):
     forecast = forecastio.load_forecast(api_key, lat, lng, time)
