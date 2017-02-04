@@ -113,6 +113,39 @@ def fifteen_mile_markers(travel_route, d=15):
 
     return output
 
+# DAN
+def segment_times(routes):
+    ''' return a dictionary that gives elapsed time at each step in route '''
+
+    # Define a variable that contains all route steps in larger API object
+    steplist = routes[0]['legs'][0]['steps']
+
+    # Define a list of dictionaries with one nested tuple that will contain the time at each step
+    time_at_step = []
+    points = []
+    times = [0]
+
+    # Compile list of tupled coordinates at each step and list of elapsed seconds at each step
+    for i in range(0, len(steplist)):
+        points.append([(steplist[i]['end_location']['lat'], steplist[i]['end_location']['lng'])]) 
+        new_time = times[-1] + steplist[i]['duration']['value']
+        times.append(new_time)
+
+    times = times[1:]
+
+    # Compile dictionary of coordinates and elapsed times at them
+    for i in range(0, len(points) - 1):
+        time_at_step.append({'point':points[i], 'time':times[i]})
+
+    return time_at_step
+
+        # {'point':(steplist[i]['end_location'][lat], steplist[i]['end_location'][lng],) ''}
+
+        # time_at_step = {'point':steplist[i]['duration']['value']} steplist[i]['duration']['value']
+
+    # for i in range(len(routes[0]['legs'][0]['steps'][0]))
+
+
 
 ###--------------------------------------------------------------------------
 ###--------------------------------------------------------------------------
@@ -126,8 +159,8 @@ def main():
 
     # origin = raw_input('Where are you starting? (please enter a valid address) ')
     # dest = raw_input('Where are you going? (please enter a valid address) ')
-    origin = '12 emery lane 07677'
-    dest = '431 riverside drive 10027'
+    origin = 'Ogunquit, ME'
+    dest = 'Coral Gables, FL'
 
     lat0, lng0 = gmaps.geocode(origin)[0]['geometry']['location'].values()
     print 'start: ', lat0, lng0
@@ -139,15 +172,44 @@ def main():
 
     lats = []
     longs = []
+    times = []
 
     for i, step in enumerate(routes[0]['legs'][0]['steps']):
         lats.append(step['start_location']['lat'])
         longs.append(step['start_location']['lng'])
-        lats.append(step['end_location']['lat'])
-        longs.append(step['end_location']['lng'])
+        if i == len(routes[0]['legs'][0]['steps']) - 1:
+            lats.append(step['end_location']['lat'])
+            longs.append(step['end_location']['lng'])
 
+        times.append(step['duration']['value'])
+
+
+    new_times = [sum(times[:i]) for i in range(len(times)+1)]
     travel_route = zip(lats, longs)
+    print travel_route, new_times
+
+    print len(new_times), len(travel_route)
+    # print segment_times(travel_route, routes)
+
+    # print ''
+    # print travel_route
+
     markers = fifteen_mile_markers(travel_route)
+
+    # DAN - Step list
+    # print segment_times(routes)
+
+    # print ''
+    # print routes
+
+    # steplist = routes[0]['legs'][0]['steps']
+    # for i in range(0, len(steplist) - 1):
+    #     print steplist[i]['duration']['value']
+
+    # print sum([step['duration']['value'] for step in steplist])/60.0
+
+    # for i in range(0,11):
+    #     print routes[0]['legs'][0]['steps'][i]
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 
