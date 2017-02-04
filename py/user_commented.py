@@ -50,10 +50,6 @@ gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 gmap_plt.plot(lats, longs)
 gmap_plt.draw("mymap.html")
 
-def get_length(travel_route):
-    ''' return length in miles of total route '''
-    return
-
 def segment_length(p1, p2):
     ''' return length in miles between two lat,lng points '''
 
@@ -78,6 +74,18 @@ def segment_length(p1, p2):
     return distance_mi
 
 print segment_length((lat0, lng0), (lat1, lng1))
+
+def get_length(travel_route):
+    ''' return length in miles of total route '''
+    route_length = 0
+
+    # Iterate through travel route coordinate list, totaling distances between successive points
+    for i in xrange(0, len(travel_route) - 1): 
+        route_length += segment_length(travel_route[i], travel_route[i + 1])
+
+    return route_length
+
+print get_length(travel_route)
 
 def fifteen_mile_markers(travel_route):
     ''' return a list of lat,lng every 15 miles of the trip '''
