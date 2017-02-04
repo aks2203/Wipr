@@ -9,18 +9,20 @@
 # Google Maps Api user input
 # This version is commented for educational purposes
 
+###--------------------------------------------------------------------------
+
 # Import statements, for modules to get Google Maps data and plotting
 from googlemaps import Client
 import gmplot
 from numpy import sin, cos, deg2rad, rad2deg, sqrt, arctan
 
+###--------------------------------------------------------------------------
+
 # API keys, issued to us from Google to access the API
 api_key_route = 'AIzaSyDJJGsUGU96GMLYUdeOdufkoIG-x2Soo9s'
 api_key_maps = 'AIzaSyDg-yjmIEndzcGRaHxH8-Jx2UNAerk7430'
 
-def get_length(travel_route):
-    ''' return length in miles of total route '''
-    return
+###--------------------------------------------------------------------------
 
 def segment_length(p1, p2):
     ''' return length in miles between two lat,lng points '''
@@ -65,6 +67,16 @@ def point_on_line(p, q, d):
     delta = segment_length(p, q) / R
     return intermediate_point(p, q, f, delta)
 
+def get_length(travel_route):
+    ''' return length in miles of total route '''
+    route_length = 0
+
+    # Iterate through travel route coordinate list, totaling distances between successive points
+    for i in xrange(0, len(travel_route) - 1): 
+        route_length += segment_length(travel_route[i], travel_route[i + 1])
+
+    return route_length
+
 def fifteen_mile_markers(travel_route, d=15):
     ''' return a list of lat,lng every 15 miles of the trip '''
     temp = 0
@@ -78,8 +90,6 @@ def fifteen_mile_markers(travel_route, d=15):
 
     while points:
         seg_len = segment_length(next, current)
-        # print points
-        # print current, next, temp
        
         if (seg_len == d - temp):
             output.append(next)
@@ -103,14 +113,21 @@ def fifteen_mile_markers(travel_route, d=15):
 
     return output
 
+
+###--------------------------------------------------------------------------
+###--------------------------------------------------------------------------
+
+
 def main():
     # Initialize the API object
     gmaps = Client(api_key_maps)
     route_map = Client(api_key_route)
 
 
-    origin = raw_input('Where are you starting? (please enter a valid address) ')
-    dest = raw_input('Where are you going? (please enter a valid address) ')
+    # origin = raw_input('Where are you starting? (please enter a valid address) ')
+    # dest = raw_input('Where are you going? (please enter a valid address) ')
+    origin = '12 emery lane 07677'
+    dest = '431 riverside drive 10027'
 
     lat0, lng0 = gmaps.geocode(origin)[0]['geometry']['location'].values()
     print 'start: ', lat0, lng0
@@ -130,10 +147,12 @@ def main():
         longs.append(step['end_location']['lng'])
 
     travel_route = zip(lats, longs)
+    markers = fifteen_mile_markers(travel_route)
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 
     gmap_plt.plot(lats, longs)
+    gmap_plt.plot([mark[0] for mark in markers], [mark[1] for mark in markers])
     gmap_plt.draw("mymap.html")
     return
 
