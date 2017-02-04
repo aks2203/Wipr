@@ -71,9 +71,9 @@ def segment_length(p1, p2):
     earth_radius_km = 6371
 
     a = sin(delta_lat_rad / 2)**2 + cos(lat1_rad) * cos(lat2_rad) * sin(delta_lng_rad / 2)**2
-    c = 2 * (arctan((sqrt(a)) / sqrt(1 - a)))
+    c = 2 * (arctan((sqrt(a) / sqrt(1 - a))))
     distance_km = earth_radius_km * c
-    distance_mi = distance_km * 1.609344    
+    distance_mi = distance_km / 1.609344    
 
     return distance_mi
 
