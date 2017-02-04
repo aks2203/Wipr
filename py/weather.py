@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 
 api_key = '9191e5943e8edbb7e275b0193a7f53cf'
 
-def get_weather(lat, lng, time):
+def get_weather(lat, lng, time=datetime.now()):
     forecast = forecastio.load_forecast(api_key, lat, lng, time)
     current = forecast.currently()
     return current.summary, current.temperature
