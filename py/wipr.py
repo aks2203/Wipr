@@ -126,8 +126,11 @@ def main():
 
     # origin = raw_input('Where are you starting? (please enter a valid address) ')
     # dest = raw_input('Where are you going? (please enter a valid address) ')
-    origin = '12 emery lane 07677'
-    dest = '431 riverside drive 10027'
+    # origin = '12 emery lane 07677'
+    # dest = '431 riverside drive 10027'
+    origin = 'New York City'
+    dest = 'Miami'
+    
 
     lat0, lng0 = gmaps.geocode(origin)[0]['geometry']['location'].values()
     print 'start: ', lat0, lng0
@@ -151,8 +154,8 @@ def main():
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 
-    gmap_plt.plot(lats, longs)
-    gmap_plt.plot([mark[0] for mark in markers], [mark[1] for mark in markers])
+    # gmap_plt.plot(lats, longs)
+    gmap_plt.scatter([mark[0] for mark in markers], [mark[1] for mark in markers], 'r', marker=True)
     gmap_plt.draw("mymap.html")
     return
 
