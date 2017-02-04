@@ -15,7 +15,7 @@
 from googlemaps import Client
 import gmplot
 from numpy import sin, cos, deg2rad, rad2deg, sqrt, arctan
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import weather
 
@@ -119,7 +119,7 @@ def fifteen_mile_markers(travel_route, d=15):
 def compile_weather(marker_times):
     forcasts = []
     for marker in marker_times:
-        forcasts.append(weather.get_weather(marker[0], marker[1], time=(datetime.now() + timedelta(seconds=marker[2])
+        forcasts.append(weather.get_weather(marker[0], marker[1], time=(datetime.now() + timedelta(seconds=marker[2]))))
     return forcasts
 
 def segment_times(travel_route, times, markers):
