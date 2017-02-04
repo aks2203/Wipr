@@ -18,9 +18,10 @@ class WiprGUI():
 
         # Ceate the main window.
         self.main_window = tk.Tk()
+        self.main_window.configure(background='lightblue')
         self.main_window.title('WIPR')
-        self.main_window.resizable(width=False, height=False)
-        self.main_window.geometry('{}x{}'.format(1000, 400))
+        self.main_window.resizable(width=True, height=True)
+        self.main_window.geometry('{}x{}'.format(1500, 800))
 
         # Create the frames to group widgets.
         self.title_frame = tk.Frame()
@@ -28,6 +29,12 @@ class WiprGUI():
         self.mid_frame = tk.Frame()
         self.bottom_frame = tk.Frame()
         self.sub_frame = tk.Frame()
+
+        self.title_frame.configure(background='lightblue')
+        self.top_frame.configure(background='lightblue')
+        self.mid_frame.configure(background='lightblue')
+        self.bottom_frame.configure(background='lightblue')
+        self.sub_frame.configure(background='lightblue')
 
         # Create title labels
         self.ready = tk.StringVar()

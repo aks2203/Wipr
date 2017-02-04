@@ -188,7 +188,7 @@ def go(origin, dest, time=datetime.now()):
     output_file.write('\n\n')
     output_file.write('\t Date, Time \t \t Weather:\n')
     for forc in forcasts:
-        output_file.write('\t\t' + str(datetime.now() + timedelta(seconds=forc[0])) + '\t' + str(forc[1][0]) + '\n')
+        output_file.write('\t' + str(datetime.now() + timedelta(seconds=forc[0])) + '\t' + str(forc[1][0]) + '\n')
 
     # weather.weather_report(marker_times)
 
