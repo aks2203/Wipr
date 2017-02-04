@@ -46,6 +46,7 @@ class WiprGUI():
                                         text='weather for your ride', \
                                         bg='red', fg='white')
         self.title_space = tk.Label(self.title_frame, text='\n')
+        self.title_space.configure(background='lightblue')
 
         # Pack 'em
         self.title_label1.pack(side='top')
@@ -63,6 +64,7 @@ class WiprGUI():
                     text='Enter time to leave:', bg='blue', fg='white')
         self.time_entry = tk.Entry(self.top_frame,  width=20)
         self.top_space = tk.Label(self.top_frame, text='\n\n')
+        self.top_space.configure(background='lightblue')
 
         # Pack top frame
         self.origin_label.pack(side='top')
@@ -106,6 +108,7 @@ class WiprGUI():
                                 command=self.quit, bg='black', fg='white', \
                                 activeforeground='blue')
         self.bottom_space = tk.Label(self.bottom_frame, text='\n\n')
+        self.bottom_space.configure(background='lightblue')
 
         # Pack the buttons.
         self.go_button.pack(side='left')
@@ -120,7 +123,7 @@ class WiprGUI():
         self.progressmessage = tk.StringVar()
         self.error_label = tk.Label(self.sub_frame, \
                                         textvariable=self.progressmessage, \
-                                        fg='red', font=12)
+                                        bg='lightblue', fg='red', font=12)
 
         # Pack Sub frame
         self.weather_label.pack()
