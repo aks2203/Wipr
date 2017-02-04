@@ -116,10 +116,10 @@ def fifteen_mile_markers(travel_route, d=15):
 
     return output
 
-def compile_weather(marker_times):
+def compile_weather(marker_times, time=datetime.now()):
     forcasts = []
     for marker in marker_times:
-        forcasts.append(weather.get_weather(marker[0], marker[1], time=(datetime.now() + timedelta(seconds=marker[2]))))
+        forcasts.append(weather.get_weather(marker[0], marker[1], time=(time + timedelta(seconds=marker[2]))))
     return forcasts
 
 def segment_times(travel_route, times, markers):
@@ -179,9 +179,9 @@ def go(origin, dest, time=datetime.now()):
     travel_route = zip(lats, longs)
     markers = fifteen_mile_markers(zip(lats, longs))
     marker_times = segment_times(travel_route, new_times, markers)
-    forcasts = compile_weather(marker_times)
+    forcasts = compile_weather(marker_times, time=datetime.now())
 
-    print forcasts
+    # weather.weather_report(marker_times)
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 5)
 
