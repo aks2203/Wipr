@@ -8,7 +8,9 @@
 
 ###--------------------------------------------------------------------------
 import Tkinter as tk
+from datetime import datetime, timedelta
 import WiprModule as wp
+import subprocess as sub
 
 class WiprGUI():
     def __init__(self):
@@ -104,17 +106,17 @@ class WiprGUI():
         self.bottom_space.pack(side='bottom')
 
         # Sub Frame
-        # self.weathermessage = tk.StringVar()
-        # self.weather_label = tk.Label(self.sub_frame, \
-        #                                 textvariable=self.weathermessage, \
-        #                                 fg='black', font=14)
+        self.weathermessage = tk.StringVar()
+        self.weather_label = tk.Label(self.sub_frame, \
+                                        textvariable=self.weathermessage, \
+                                        fg='black', font=14)
         self.progressmessage = tk.StringVar()
         self.error_label = tk.Label(self.sub_frame, \
                                         textvariable=self.progressmessage, \
                                         fg='red', font=12)
 
         # Pack Sub frame
-        # self.weather_label.pack()
+        self.weather_label.pack()
         self.error_label.pack()
 
         # Pack the frames
@@ -136,9 +138,35 @@ class WiprGUI():
         # print self.origin_entry.get(), self.dest_entry.get()
         forcasts = wp.go(self.origin_entry.get(), self.dest_entry.get(), self.time_entry.get())
         # forcast_str = ['%s \n' % (i) for i in forcasts]
-        # self.weathermessage.set(wp.go(self.origin_entry.get(), self.dest_entry.get()))
+        # self.weathermessage.set(forcasts)
+        times = [i[0] for i in forcasts]
+        forcast_list = [i[1][0] for i in forcasts]
+        icon_list = [i[1][1] for i in forcasts]
 
-        self.progressmessage.set('Done!')
+
+        file = open("output.txt")
+        data = file.read()
+        file.close()
+        Results = tk.Label(self.main_window, text = data)
+        Results.grid(row = 1, column = 1)
+
+        # print forcasts
+        # print type(times[0])
+
+        # my_str = ''
+        # for i in xrange(len(forcasts)):
+        #     my_str += str(datetime.now() + timedelta(seconds=times[i])) # + str(forcast_list[i])+ '\n'
+        # self.weathermessage.set(my_str)
+
+        # p = sub.Popen('./script',stdout=sub.PIPE,stderr=sub.PIPE)
+        # output, errors = p.communicate()
+
+        # root = Tk()
+        # text = Text(root)
+        # text.pack()
+        # text.insert(END, output)
+        # root.mainloop()
+        # self.progressmessage.set('Done!')
 
     def filter(self):
         '''runs the appropriate functions to put the data in the proper
@@ -174,3 +202,12 @@ class WiprGUI():
 
 # Create an instance 
 tweet = WiprGUI()
+# p = sub.Popen('./WiprModule.py',stdout=sub.PIPE,stderr=sub.PIPE)
+# output, errors = p.communicate()
+
+# root = Tk()
+# text = Text(root)
+# text.pack()
+# text.insert(END, output)
+# root.mainloop()
+

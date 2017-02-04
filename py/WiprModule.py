@@ -120,7 +120,8 @@ def compile_weather(marker_times, time=datetime.now()):
     forcasts = []
     for marker in marker_times:
         forcasts.append(weather.get_weather(marker[0], marker[1], time=(time + timedelta(seconds=marker[2]))))
-    return forcasts
+    # print zip([i[2] for i in marker_times], forcasts)
+    return zip([i[2] for i in marker_times], forcasts)
 
 def segment_times(travel_route, times, markers):
     ''' merges Google's step times with our mile markers '''
@@ -157,10 +158,10 @@ def go(origin, dest, time=datetime.now()):
     route_map = Client(api_key_route)
 
     lat0, lng0 = gmaps.geocode(origin)[0]['geometry']['location'].values()
-    print 'start: ', lat0, lng0
+    # print 'start: ', lat0, lng0
 
     lat1, lng1 = gmaps.geocode(dest)[0]['geometry']['location'].values()
-    print 'end: ', lat1, lng1
+    # print 'end: ', lat1, lng1
 
     routes = route_map.directions(origin, dest)
 
@@ -183,14 +184,19 @@ def go(origin, dest, time=datetime.now()):
     markers = fifteen_mile_markers(zip(lats, longs))
     marker_times = segment_times(travel_route, new_times, markers)
     forcasts = compile_weather(marker_times, time=datetime.now())
+    output_file = open('output.txt', 'w')
+    output_file.write('\n\n')
+    output_file.write('\t Date, Time \t \t Weather:\n')
+    for forc in forcasts:
+        output_file.write('\t\t' + str(datetime.now() + timedelta(seconds=forc[0])) + '\t' + str(forc[1][0]) + '\n')
 
     # weather.weather_report(marker_times)
 
-    gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 5)
+    # gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 5)
 
-    gmap_plt.scatter([mark[0] for mark in markers], [mark[1] for mark in markers], 'r', marker=True, title='AVI')
-    gmap_plt.draw("mymap.html")
-    os.system('open mymap.html')
+    # gmap_plt.scatter([mark[0] for mark in markers], [mark[1] for mark in markers], 'r', marker=True, title='AVI')
+    # gmap_plt.draw("mymap.html")
+    # os.system('open mymap.html')
     return forcasts
 
 
