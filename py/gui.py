@@ -134,7 +134,7 @@ class WiprGUI():
     def go(self):
         '''go get everything from WiprModule'''
         # print self.origin_entry.get(), self.dest_entry.get()
-        forcasts = wp.go(self.origin_entry.get(), self.dest_entry.get())
+        forcasts = wp.go(self.origin_entry.get(), self.dest_entry.get(), self.time_entry.get())
         # forcast_str = ['%s \n' % (i) for i in forcasts]
         # self.weathermessage.set(wp.go(self.origin_entry.get(), self.dest_entry.get()))
 
