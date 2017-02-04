@@ -114,9 +114,25 @@ def fifteen_mile_markers(travel_route, d=15):
     return output
 
 # DAN
-def segment_times(travel_route, markers):
-    '''merges Google's step times with our mile markers'''
+def segment_times(travel_route, times, markers):
+    ''' merges Google's step times with our mile markers '''
     
+    j= 1
+    timed_markers = []
+
+    for marker in markers:
+        a = segment_length(marker, travel_route[j-1])
+        b = segment_length(marker, travel_route[j])
+        c = segment_length(marker, travel_route[j+1])
+
+        if a < b and a < c:
+            timed_markers.append((marker[0], marker[1], times[j-1]))
+        elif b < a and b < c:
+            timed_markers.append((marker[0], marker[1], times[j]))
+            j += 1
+        else:
+            timed_markers.append((marker[0], marker[1], times[j+ 1]))
+            j += 1
 
     #timed_markers is a list of three term tuples (lat, lng, time)
     return timed_markers
@@ -161,11 +177,16 @@ def main():
 
     new_times = [sum(times[:i]) for i in range(len(times)+1)]
     travel_route = zip(lats, longs)
+    markers = fifteen_mile_markers(zip(lats, longs))
 
-    markers = fifteen_mile_markers(travel_route)
+    # Dan - Test
+    # print markers
+    print [i[2] for i in segment_times(travel_route, new_times, markers)]
+
 
     gmap_plt = gmplot.GoogleMapPlotter((lat0 + lat1) / 2.0, (lng0 + lng1) / 2.0, 16)
 
+    gmap_plt.plot([i[0] for i in markers], [i[0] for i in markers], 'r')
     gmap_plt.plot(lats, longs)
     gmap_plt.plot([mark[0] for mark in markers], [mark[1] for mark in markers])
     gmap_plt.draw("mymap.html")
