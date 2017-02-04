@@ -126,6 +126,7 @@ def segment_times(travel_route, times, markers):
     ''' merges Google's step times with our mile markers '''
     
     j= 1
+    j_max = len(travel_route) - 2
     timed_markers = []
 
     for marker in markers:
@@ -137,10 +138,12 @@ def segment_times(travel_route, times, markers):
             timed_markers.append((marker[0], marker[1], times[j-1]))
         elif b < a and b < c:
             timed_markers.append((marker[0], marker[1], times[j]))
-            j += 1
+            if j < j_max:
+                j += 1
         else:
             timed_markers.append((marker[0], marker[1], times[j+ 1]))
-            j += 1
+            if j < j_max:
+                j += 1
 
     #timed_markers is a list of three term tuples (lat, lng, time)
     return timed_markers
